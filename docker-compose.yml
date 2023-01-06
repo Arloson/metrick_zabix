@@ -2,7 +2,7 @@ version: '3.9'
 
 networks:
  backend:
-  #external: true
+  external: true
 
 services:
   postgre:
@@ -16,7 +16,6 @@ services:
    networks:
     - backend
   zabix:
-   #image: zabbix/zabbix-server-pgsql
    image: zabbix/zabbix-web-nginx-pgsql
    environment:
     ZBX_SERVER_HOST: zab_serv
