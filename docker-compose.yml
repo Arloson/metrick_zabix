@@ -1,0 +1,15 @@
+version: '3.9'
+
+networks:
+ backend:
+  #external: true
+
+services:
+  postgre:
+   image: postgres:12.13-alpine
+   networks:
+    - backend
+  zabix:
+   image: zabbix/zabbix-server-pgsql
+   networks:
+    - backend
