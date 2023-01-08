@@ -16,10 +16,11 @@ services:
     POSTGRES_HOST_AUTH_METHOD: trust
    networks:
     - backend
-  zabix:
+
+  zabbix_web:
    image: zabbix/zabbix-web-nginx-pgsql
    environment:
-    ZBX_SERVER_HOST: zab_serv
+    ZBX_SERVER_HOST: zabbix_server
     ZBX_SERVER_PORT: 10051
     POSTGRES_DB: zabbix
     DB_SERVER_HOST: postgre
@@ -32,7 +33,7 @@ services:
    networks:
     - backend
 
-  zab_serv:
+  zabbix_server:
    image: zabbix/zabbix-server-pgsql
    environment:
     POSTGRES_DB: zabbix
@@ -41,7 +42,18 @@ services:
     POSTGRES_USER: postgre
     POSTGRES_PASSWORD: passwd
     DB_SERVER_SCHEMA: postgre
+   networks:
+    - backend
+
+  zabbix_agent:
+   image: zabbix/zabbix-agent
+   environment:
+    ZBX_SERVER_HOST: zabbix_server
+   volumes:
+    - /dev/sda1:/dev/sda5
+    - /dev/sda2:/dev/sda6
+    - /dev/sda5:/dev/sda7 
    ports:
-    - 8080:8200
+    - 10050:10050 
    networks:
     - backend
