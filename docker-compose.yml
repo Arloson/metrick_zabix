@@ -5,7 +5,7 @@ networks:
   external: true
 
 services:
-  postgre:
+  db:
    image: postgres:13-alpine
    restart: always
    environment:
@@ -17,13 +17,13 @@ services:
    networks:
     - backend
 
-  zabbix_web:
+  web:
    image: zabbix/zabbix-web-nginx-pgsql
    environment:
-    ZBX_SERVER_HOST: zabbix_server
+    ZBX_SERVER_HOST: server
     ZBX_SERVER_PORT: 10051
     POSTGRES_DB: zabbix
-    DB_SERVER_HOST: postgre
+    DB_SERVER_HOST: db
     DB_SERVER_PORT: 5432
     POSTGRES_USER: postgre
     POSTGRES_PASSWORD: passwd
@@ -33,11 +33,11 @@ services:
    networks:
     - backend
 
-  zabbix_server:
+  server:
    image: zabbix/zabbix-server-pgsql
    environment:
     POSTGRES_DB: zabbix
-    DB_SERVER_HOST: postgre
+    DB_SERVER_HOST: db
     DB_SERVER_PORT: 5432
     POSTGRES_USER: postgre
     POSTGRES_PASSWORD: passwd
@@ -45,10 +45,10 @@ services:
    networks:
     - backend
 
-  zabbix_agent:
+  agent:
    image: zabbix/zabbix-agent
    environment:
-    ZBX_SERVER_HOST: zabbix_server
+    ZBX_SERVER_HOST: server
    volumes:
     - /dev/sda1:/dev/sda5
     - /dev/sda2:/dev/sda6
@@ -57,3 +57,12 @@ services:
     - 10050:10050 
    networks:
     - backend
+
+  ubuntu:
+   image: linux/ubuntu:1.2
+   networks:
+    - backend
+   volumes:
+    - ./agent/zabbix_agentd.conf:/etc/zabbix/zabbix_agentd.conf
+   entrypoint: zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf
+ 
