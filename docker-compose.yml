@@ -58,11 +58,5 @@ services:
    networks:
     - backend
 
-  ubuntu:
-   image: linux/ubuntu:1.2
-   networks:
-    - backend
-   volumes:
-    - ./agent/zabbix_agentd.conf:/etc/zabbix/zabbix_agentd.conf
-   entrypoint: zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf
+  
  
