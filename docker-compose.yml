@@ -8,12 +8,15 @@ services:
   db:
    image: postgres:13-alpine
    restart: always
+   volumes: 
+    - ./data:/var/lib/postgresql/data/pgdata
    environment:
+    PGDATA: /var/lib/postgresql/data/pgdata
     POSTGRES_USER: postgre
     DB_SERVER_SCHEMA: zabbix
     POSTGRES_PASSWORD: passwd
     POSTGRES_DB: zabbix
-    POSTGRES_HOST_AUTH_METHOD: trust
+    #POSTGRES_HOST_AUTH_METHOD: trust
    networks:
     - backend
 
@@ -30,6 +33,7 @@ services:
     DB_SERVER_SCHEMA: postgre
    ports:
     - 8081:8080
+    - 10051:10051
    networks:
     - backend
 
@@ -54,7 +58,7 @@ services:
     - /dev/sda2:/dev/sda6
     - /dev/sda5:/dev/sda7 
    ports:
-    - 10050:10050 
+    - 10052:10050 
    networks:
     - backend
 
