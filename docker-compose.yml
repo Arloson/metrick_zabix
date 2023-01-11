@@ -16,7 +16,6 @@ services:
     DB_SERVER_SCHEMA: zabbix
     POSTGRES_PASSWORD: passwd
     POSTGRES_DB: zabbix
-    #POSTGRES_HOST_AUTH_METHOD: trust
    networks:
     - backend
 
