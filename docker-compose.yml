@@ -32,9 +32,11 @@ services:
     DB_SERVER_SCHEMA: postgre
    ports:
     - 8081:8080
-    - 10051:10051
    networks:
     - backend
+   depends_on:
+    - db
+    - server
 
   server:
    image: zabbix/zabbix-server-pgsql
@@ -46,7 +48,10 @@ services:
     POSTGRES_PASSWORD: passwd
     DB_SERVER_SCHEMA: postgre
    networks:
-    - backend
+    backend:
+     ipv4_address: 172.18.0.4
+   depends_on:
+    - db
 
   agent:
    image: zabbix/zabbix-agent
@@ -60,6 +65,8 @@ services:
     - 10052:10050 
    networks:
     - backend
+   depends_on:
+    - server
 
   
  
